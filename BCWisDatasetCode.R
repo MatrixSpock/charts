@@ -436,6 +436,9 @@ server <- function(input, output, session) {
     # Remove NA values
     corr_data <- corr_data %>% filter(!is.na(Correlation))
     
+    # Create label column for displaying correlation values on heatmap
+    corr_data$label <- round(corr_data$Correlation, 2)
+    
     # Create heatmap
     plot_ly(
       data = corr_data,
@@ -443,6 +446,9 @@ server <- function(input, output, session) {
       y = ~Feature2,
       z = ~Correlation,
       type = "heatmap",
+      text = ~label,
+      texttemplate = "%{text}",
+      textfont = list(color = "black"),
       colorscale = "RdBu",
       zmin = -1,
       zmax = 1,
